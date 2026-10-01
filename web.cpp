@@ -8,6 +8,9 @@ emp::web::Document doc{"target"};
 
 class AEAnimator : public emp::web::Animate {
 
+    emp::Random random{5};
+    OrgWorld world{random};
+
     // arena width and height
     const int num_h_boxes = 10;
     const int num_w_boxes = 10;
@@ -30,6 +33,19 @@ class AEAnimator : public emp::web::Animate {
 
     void DoFrame() override {
         canvas.Clear();
+        world.Update();
+
+        int org_num = 0;
+        for (int x = 0; x < num_w_boxes; x++){
+            for (int y = 0; y < num_h_boxes; y++) {
+                if (world.IsOccupied(org_num)) {
+                    canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "black", "black");
+                } else {
+                    canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "white", "black");
+                }
+                org_num++;
+            }
+        }
 
     }
 
